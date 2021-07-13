@@ -23,11 +23,12 @@ namespace TestProject1
             var RestRequest = restapi.CreatePostRequest(jsonStrg);
             var response = restapi.GetResponse((RestClient)sourceUrl, RestRequest);
             CreateUser content = restapi.GetContent<CreateUser>(response);
-
+            
             Assert.AreEqual(content.name, "morpheus");
 
             Assert.AreEqual(content.job, "leader");
-
+            Assert.AreEqual(response.StatusCode, "200");
+            Assert.AreEqual(response.IsSuccessful, "True");
         }
 
     }
