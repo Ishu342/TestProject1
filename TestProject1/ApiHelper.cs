@@ -5,6 +5,9 @@ using RestSharp;
 using System.IO;
 using Flurl;
 using RestSharp.Authenticators;
+using Newtonsoft.Json;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 
 namespace TestProject1
 {
@@ -33,12 +36,14 @@ namespace TestProject1
 
         }
 
+        
 
-        public IRestRequest CreatePutRequest(string jsonstr)
+
+        public IRestRequest CreatePutRequest(string jsonStrg)
         {
             IRestRequest RestRequest = new RestRequest(Method.PUT);
             RestRequest.AddHeader("Accept", "application/json");
-            RestRequest.AddParameter("application/json", jsonstr, ParameterType.RequestBody);
+            RestRequest.AddParameter("application/json", jsonStrg, ParameterType.RequestBody);
             return RestRequest;
 
         }
@@ -56,6 +61,18 @@ namespace TestProject1
             return RestRequest;
 
         }
+
+        internal T1 GetContent<T1>(object httpresponse)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal object GetResponse(HttpClient httpClient, IRestRequest restRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        
 
         public IRestResponse GetResponse(RestClient restClient, IRestRequest RestRequest)
         {
