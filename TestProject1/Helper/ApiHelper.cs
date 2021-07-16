@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using RestSharp;
-using System.IO;
-using Flurl;
-using RestSharp.Authenticators;
-using Newtonsoft.Json;
 using System.Net.Http;
-using Microsoft.AspNetCore.Http;
+using Flurl;
+using RestSharp;
+using RestSharp.Authenticators;
 
 namespace TestProject1
 {
     class ApiHelper<T>
     {
-
         public IRestClient restClient;
         public IRestRequest RestRequest;
         public string baseurl = "https://reqres.in";
@@ -24,7 +18,6 @@ namespace TestProject1
             var restClient = new RestClient(url);
             restClient.Authenticator = new HttpBasicAuthenticator("admin", "welcome");
             return restClient;
-
         }
 
         public IRestRequest CreatePostRequest(string jsonStrg)
@@ -33,10 +26,7 @@ namespace TestProject1
             RestRequest.AddHeader("Accept", "application/json");
             RestRequest.AddParameter("application/json", jsonStrg, ParameterType.RequestBody);
             return RestRequest;
-
-        }
-
-        
+        }      
 
 
         public IRestRequest CreatePutRequest(string jsonStrg)
@@ -47,6 +37,7 @@ namespace TestProject1
             return RestRequest;
 
         }
+
         public IRestRequest CreateGetRequest()
         {
             IRestRequest RestRequest = new RestRequest(Method.GET);
@@ -54,6 +45,7 @@ namespace TestProject1
             return RestRequest;
 
         }
+
         public IRestRequest CreateDeleteRequest()
         {
             IRestRequest RestRequest = new RestRequest(Method.DELETE);

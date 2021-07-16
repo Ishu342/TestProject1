@@ -16,10 +16,9 @@ namespace TestProject1
     {
         private string url = "https://reqres.in";
         HttpClient httpClient = new HttpClient();
-        [TestMethod]
+        [TestMethod("Users List")]
         public void GetRequest()
-        {
-                      
+        {                      
             HttpRequestMessage httpRequest = new HttpRequestMessage();
             httpRequest.RequestUri = new Uri(url + "/api/users?page=2");
             httpRequest.Method = HttpMethod.Get;
@@ -29,9 +28,11 @@ namespace TestProject1
             Console.WriteLine("Response Message-->"+ responsemsg.ToString());
             HttpStatusCode statusCode = responsemsg.StatusCode;
             Console.WriteLine("Response Code-->" + statusCode);
+            Assert.AreEqual("OK",statusCode.ToString());
+            Assert.IsNotNull(true);
 
         }
-        [TestMethod]
+        [TestMethod("New User")]
         
             public void POSTRequest()
         {
@@ -51,10 +52,11 @@ namespace TestProject1
             Console.WriteLine("Response Message-->" + responsemsg.ToString());
             HttpStatusCode statusCode = responsemsg.StatusCode;
             Console.WriteLine("Response Code-->" + statusCode);
+            Assert.AreEqual("Created",statusCode.ToString());
 
         }
 
-        [TestMethod]
+        [TestMethod("Update User")]
 
         public void PUTRequest()
         {
@@ -74,14 +76,15 @@ namespace TestProject1
             Console.WriteLine("Response Message-->" + responsemsg.ToString());
             HttpStatusCode statusCode = responsemsg.StatusCode;
             Console.WriteLine("Response Code-->" + statusCode);
-                        
+            String msg = "OK";
+            Assert.AreEqual(msg,statusCode.ToString());
+
         }
 
-        [TestMethod]
+        [TestMethod("Delete User")]
 
         public void DELETERequest()
-        {
-            
+        {            
             HttpRequestMessage httpRequest = new HttpRequestMessage();
             httpRequest.Method = HttpMethod.Delete;
             httpRequest.Headers.Add("Accept", "application/json");
@@ -90,6 +93,7 @@ namespace TestProject1
             Console.WriteLine("Response Message-->" + responsemsg.ToString());
             HttpStatusCode statusCode = responsemsg.StatusCode;
             Console.WriteLine("Response Code-->" + statusCode);
+            Assert.AreEqual("NoContent", statusCode.ToString());
 
             httpClient.Dispose();
         }

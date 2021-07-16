@@ -4,6 +4,7 @@ using System.Text;
 using Newtonsoft.Json;
 using RestSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RestSharp.Serialization.Json;
 
 namespace TestProject1
 {
@@ -11,7 +12,7 @@ namespace TestProject1
     public class RestAPITest
     {
         public IRestClient restClient;
-        [TestMethod]
+        [TestMethod("New User")]
         public void CreateUserByPostRequest()
         {
             string jsonStrg = @"{
@@ -19,43 +20,34 @@ namespace TestProject1
                         ""job"": ""leader""
                             }";
 
-            ApiHelper<CreateUser> restapi = new ApiHelper<CreateUser>();
-            var sourceUrl = restapi.SetUrl("/api/users");
-            var RestRequest = restapi.CreatePostRequest(jsonStrg);
-            var response = restapi.GetResponse((RestClient)sourceUrl, RestRequest);
-            CreateUser content = restapi.GetContent<CreateUser>(response);
+            ApiHelper<CreateUser> RestApi = new ApiHelper<CreateUser>();
+            var sourceUrl = RestApi.SetUrl("/api/users");
+            var RestRequest = RestApi.CreatePostRequest(jsonStrg);
+            var response = RestApi.GetResponse((RestClient)sourceUrl, RestRequest);
+            CreateUser content = RestApi.GetContent<CreateUser>(response);
             Console.WriteLine("response content-->" + response.Content);
             Assert.AreEqual(content.name, "morpheus");
-
-            Assert.AreEqual(content.job, "leader");
-           // Assert.AreEqual(response.StatusCode, Created);
-            //Assert.AreEqual(response.IsSuccessful, "true");
+            Assert.AreEqual(content.job, "leader");           
         }
 
-        [TestMethod]
-        public ListOfUsersDTO GetUsers<ListOfUsersDTO>()
+        [TestMethod("Users List")]
+        public void GetUsers()
         {
             var restRequest = new RestRequest("/api/users?page=2", Method.GET);
             restRequest.AddHeader("Accept", "application/json");
-            restRequest.RequestFormat = DataFormat.Json;
-             
-            IRestResponse response = restClient.Execute(restRequest);
-            var content = response.Content;
-
-            var users = JsonConvert.DeserializeObject<ListOfUsersDTO>(content);
-            
-            return users;
+            //restRequest.RequestFormat = DataFormat.Json;
+            var restclient = new RestClient("https://reqres.in");
+            IRestResponse response = restclient.Execute(restRequest);         
+            Assert.AreEqual(true, response.IsSuccessful);
         }
-
-
-        [TestMethod]
+        
+        [TestMethod("Update User")]
         public void CreatePutRequest()
         {
             string jsonStrg = @"{
                         ""name"": ""morpheus123"",
                         ""job"": ""leader""
                             }";
-
             ApiHelper<CreateUser> restapi = new ApiHelper<CreateUser>();
             var sourceUrl = restapi.SetUrl("/api/users/2");
             var RestRequest = restapi.CreatePutRequest(jsonStrg);
@@ -63,30 +55,19 @@ namespace TestProject1
             CreateUser content = restapi.GetContent<CreateUser>(response);
             Console.WriteLine("response content-->" + response.Content);
             Assert.AreEqual(content.name, "morpheus123");
-
             Assert.AreEqual(content.job, "leader");
-
         }
-        public IRestRequest CreateGetRequest()
-        {
-            IRestRequest RestRequest = new RestRequest(Method.GET);
-            RestRequest.AddHeader("Accept", "application/json");
-            return RestRequest;
-
-        }
-        [TestMethod]
+       
+        [TestMethod("Delete User")]        
         public void DeleteRequest()
         {
             IRestRequest RestRequest = new RestRequest(Method.DELETE);
             RestRequest.AddHeader("Accept", "application/json");
-
             ApiHelper<CreateUser> restapi = new ApiHelper<CreateUser>();
             var sourceUrl = restapi.SetUrl("/api/users/2");
             var delRequest = restapi.CreateDeleteRequest();
             var response = restapi.GetResponse((RestClient)sourceUrl, delRequest);
-
-            Console.WriteLine("Response code" + response.IsSuccessful);
-
+            Assert.AreEqual(true, response.IsSuccessful);
         }
 
     }
