@@ -5,7 +5,7 @@ using RestSharp;
 namespace TestProject1
 {
     [TestClass]
-    public class RestAPITest
+    public class RestSharpAPITest
     {
         public IRestClient restClient;
         [TestMethod("New User")]

@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestProject1
 {
     [TestClass]
-    public class GetUsersAPIwithHTTPClient
+    public class HTTPClientAPITest
     {
         private string url = "https://reqres.in";
         HttpClient httpClient = new HttpClient();
