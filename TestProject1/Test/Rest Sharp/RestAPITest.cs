@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
-using RestSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RestSharp.Serialization.Json;
+using RestSharp;
 
 namespace TestProject1
 {
