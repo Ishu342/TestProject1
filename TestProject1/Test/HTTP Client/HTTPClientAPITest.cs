@@ -10,31 +10,41 @@ namespace TestProject1
     [TestClass]
     public class HTTPClientAPITest
     {
+        //base url
         private string url = "https://reqres.in";
+        //creating http client
         HttpClient httpClient = new HttpClient();
+
+        //adding annotation with the method description
         [TestMethod("Users List")]
         public void GetRequest()
         {                      
+            //creating httprequest
             HttpRequestMessage httpRequest = new HttpRequestMessage();
             httpRequest.RequestUri = new Uri(url + "/api/users?page=2");
+            //using get method
             httpRequest.Method = HttpMethod.Get;
+            //adding header as json
             httpRequest.Headers.Add("Accept", "application/json");
+            //sending therequest
             Task<HttpResponseMessage> response = httpClient.SendAsync(httpRequest);
-            HttpResponseMessage responsemsg = response.Result;
-            Console.WriteLine("Response Message-->"+ responsemsg.ToString());
-            HttpStatusCode statusCode = responsemsg.StatusCode;
-            Console.WriteLine("Response Code-->" + statusCode);
+            //getting result by httpresponse
+            HttpResponseMessage responsemsg = response.Result;            
+            HttpStatusCode statusCode = responsemsg.StatusCode;            
+            //verifing statuscode
             Assert.AreEqual("OK",statusCode.ToString());
+            //verifing that the data is present
             Assert.IsNotNull(true);
-
         }
-        [TestMethod("New User")]
-        
+
+        [TestMethod("New User")]        
             public void POSTRequest()
         {
-            HttpRequestMessage httpRequest = new HttpRequestMessage();            
+            HttpRequestMessage httpRequest = new HttpRequestMessage();
+            //using post method
             httpRequest.Method = HttpMethod.Post;
             httpRequest.Headers.Add("Accept", "application/json");
+            //creating json data
             string jsonStrg ="{" +
             "\"id\": \"7\","+
             "\"email\": \"john.lawson@reqres.in\","+
@@ -44,10 +54,9 @@ namespace TestProject1
 
             HttpContent httpcontent = new StringContent(jsonStrg, Encoding.UTF8);
             Task<HttpResponseMessage> response = httpClient.PostAsync(url+"/api/users", httpcontent);
-            HttpResponseMessage responsemsg = response.Result;
-            Console.WriteLine("Response Message-->" + responsemsg.ToString());
-            HttpStatusCode statusCode = responsemsg.StatusCode;
-            Console.WriteLine("Response Code-->" + statusCode);
+            HttpResponseMessage responsemsg = response.Result;            
+            HttpStatusCode statusCode = responsemsg.StatusCode;    
+            //verifing the status code
             Assert.AreEqual("Created",statusCode.ToString());
 
         }
@@ -57,6 +66,7 @@ namespace TestProject1
         public void PUTRequest()
         {
             HttpRequestMessage httpRequest = new HttpRequestMessage();
+            //using put method to upfate the data
             httpRequest.Method = HttpMethod.Put;
             httpRequest.Headers.Add("Accept", "application/json");
             string jsonStrg = "{" +
@@ -68,11 +78,10 @@ namespace TestProject1
 
             HttpContent httpcontent = new StringContent(jsonStrg, Encoding.UTF8);
             Task<HttpResponseMessage> response = httpClient.PutAsync(url+"/api/users/2", httpcontent);
-            HttpResponseMessage responsemsg = response.Result;
-            Console.WriteLine("Response Message-->" + responsemsg.ToString());
-            HttpStatusCode statusCode = responsemsg.StatusCode;
-            Console.WriteLine("Response Code-->" + statusCode);
+            HttpResponseMessage responsemsg = response.Result;            
+            HttpStatusCode statusCode = responsemsg.StatusCode;            
             String msg = "OK";
+            //verifing the statuscode
             Assert.AreEqual(msg,statusCode.ToString());
 
         }
@@ -82,15 +91,16 @@ namespace TestProject1
         public void DELETERequest()
         {            
             HttpRequestMessage httpRequest = new HttpRequestMessage();
+            //using delete method
             httpRequest.Method = HttpMethod.Delete;
             httpRequest.Headers.Add("Accept", "application/json");
+            //task has to be created when async is in use
             Task<HttpResponseMessage> response = httpClient.DeleteAsync(url+"/api/users/2");
-            HttpResponseMessage responsemsg = response.Result;
-            Console.WriteLine("Response Message-->" + responsemsg.ToString());
+            HttpResponseMessage responsemsg = response.Result;            
             HttpStatusCode statusCode = responsemsg.StatusCode;
-            Console.WriteLine("Response Code-->" + statusCode);
+            //verifing statuscode
             Assert.AreEqual("NoContent", statusCode.ToString());
-
+            //closing the opened httpclient
             httpClient.Dispose();
         }
     }
