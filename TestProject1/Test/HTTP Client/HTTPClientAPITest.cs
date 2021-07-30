@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestProject1
@@ -14,7 +15,7 @@ namespace TestProject1
         private string url = "https://reqres.in";
         //creating http client
         HttpClient httpClient = new HttpClient();
-
+        
         //adding annotation with the method description
         [TestMethod("Users List")]
         public void GetRequest()
@@ -22,17 +23,23 @@ namespace TestProject1
             //creating httprequest
             HttpRequestMessage httpRequest = new HttpRequestMessage();
             httpRequest.RequestUri = new Uri(url + "/api/users?page=2");
+
             //using get method
             httpRequest.Method = HttpMethod.Get;
+
             //adding header as json
             httpRequest.Headers.Add("Accept", "application/json");
+
             //sending therequest
             Task<HttpResponseMessage> response = httpClient.SendAsync(httpRequest);
+
             //getting result by httpresponse
             HttpResponseMessage responsemsg = response.Result;            
-            HttpStatusCode statusCode = responsemsg.StatusCode;            
+            HttpStatusCode statusCode = responsemsg.StatusCode;    
+            
             //verifing statuscode
             Assert.AreEqual("OK",statusCode.ToString());
+
             //verifing that the data is present
             Assert.IsNotNull(true);
         }
@@ -94,6 +101,7 @@ namespace TestProject1
             //using delete method
             httpRequest.Method = HttpMethod.Delete;
             httpRequest.Headers.Add("Accept", "application/json");
+            
             //task has to be created when async is in use
             Task<HttpResponseMessage> response = httpClient.DeleteAsync(url+"/api/users/2");
             HttpResponseMessage responsemsg = response.Result;            
@@ -101,6 +109,7 @@ namespace TestProject1
             //verifing statuscode
             Assert.AreEqual("NoContent", statusCode.ToString());
             //closing the opened httpclient
+            
             httpClient.Dispose();
         }
     }
